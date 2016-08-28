@@ -1,0 +1,113 @@
+.form-wrapper {
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	position: relative;
+    text-align: center;
+	/*min-height: 360px;*/
+}
+
+.input-wrapper input {
+	background: rgb(250, 250, 250);
+	margin: 0px;
+	padding: 8px 10px;
+	border-radius: 5px;
+	border: 1px solid rgb(225, 225, 225);
+	border-image: none;
+	/*width: 180px;*/
+	color: rgb(85, 85, 85);
+	line-height: 16px;
+	font-size: 14px;
+	box-shadow: inset 0px 1px 2px rgba(150, 150, 150, 0.5), 0px 1px 0px
+		rgba(255, 255, 255, 0.15);
+}
+
+.input-wrapper input:focus {
+	background: rgb(255, 255, 255);
+	outline: 0px;
+	border: 1px solid rgb(175, 175, 175);
+	border-image: none;
+	box-shadow: inset 0px 1px 2px rgba(15, 82, 135, 0.25), 0px 0px 10px
+		rgba(255, 255, 255, 0.3);
+}
+
+.input-wrapper input:-ms-input-placeholder {
+	color: rgb(204, 204, 204);
+}
+
+.input-wrapper input:focus::-webkit-input-placeholder{
+    color: transparent;
+}
+
+.canvas-wrapper {
+    text-align: center;
+    width: 100%;
+}
+
+.image-wrapper {
+    width: auto;
+    background-color: #000;
+    display: inline-block;
+}
+
+.image-wrapper.active .image {
+    opacity: 0.4;
+}
+
+.canvas {
+    width: auto;
+    height: auto;
+}
+
+.submit-button {
+	-moz-box-shadow: inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow: inset 0px 1px 0px 0px #ffffff;
+	box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3), 0px 1px 1px
+		rgba(50, 50, 50, 0.05);
+	background-color: rgb(224, 224, 224);
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	border: 1px solid #dcdcdc;
+	display: inline-block;
+	cursor: pointer;
+	color: #666666;
+	font-size: 14px;
+	padding: 0px 24px;
+    line-height: 32px;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px #ffffff;
+}
+
+.submit-button:hover {
+	background-color: rgb(255, 255, 255);
+}
+
+.submit-button:active {
+	position: relative;
+	top: 1px;
+}
+
+.submit-button-text {
+    display: inline;
+}
+
+.spinner {
+    display: inline-block;
+    opacity: 0;
+    width: 0;
+    
+    -webkit-transition: opacity 0.25s, width 0.25s;
+    -moz-transition: opacity 0.25s, width 0.25s;
+    -o-transition: opacity 0.25s, width 0.25s;
+    transition: opacity 0.25s, width 0.25s;
+}
+
+.has-spinner.active {
+    cursor: progress;
+}
+
+.has-spinner.active .spinner {
+    opacity: 1;
+    width: 20px;
+}

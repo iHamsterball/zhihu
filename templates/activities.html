@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+{% block additional_css %}
+{% load staticfiles %}
+<link href="/static/css/daterangepicker-bs3.css" rel="stylesheet">
+<link href="/static/css/zhihu.css" rel="stylesheet">
+<link href="/static/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
+{% endblock %}
+{% block additional_js %}
+<script language="javascript" type="text/jscript" src="/static/js/moment.min.js"></script>
+<script language="javascript" type="text/jscript" src="/static/js/daterangepicker.js"></script>
+<script language="javascript" type="text/jscript" src="/static/js/jquery.form.js"></script>
+<script language="javascript" type="text/jscript" src="/static/js/Chart.1.1.1.js"></script>
+<!-- <script language="javascript" type="text/jscript" src="/static/js/Chart.js"></script>-->
+{% endblock %}
+{% block content %}
+<div class="row typo">
+    <div class="col-md-8 col-md-offset-2">
+        <!-- 页面内容 -->
+        <div class="well typo post post-index">
+            <h2 class="title">
+                知乎用户动态统计
+            </h2>
+            <div class="post_info">
+                <div class="post_info">
+                    <ul class="tag_box inline list-inline">
+                        <li>本页创建于</li>
+                        <li><i class="fa fa-calendar"></i></li>
+                        <li id="post-date"> 2016 年 07 月 09 日</li>
+                    </ul>
+                </div>
+            </div>
+            <h3>项目介绍</h3>
+            <div class="archive">
+                此项目通过获取用户动态的时间信息，进行数据分析和图表绘制，帮助更好了解自己使用知乎的习惯。<br />
+                如果你有兴趣提供协助，欢迎来测试或帮助编写程序。
+            </div>
+            <h3>使用说明</h3>
+            <div class="archive">
+                在文本框中输入知乎用户名，例如<code>http://www.zhihu.com/people/ihamsterball</code>中的<code>ihamsterball</code>。
+                时间选框如果勾选，只会计算选中日期范围内的统计数据。<br />
+                横坐标为时段，纵坐标为相对频率。<br />
+                由于数据量较大，所需时间可能非常长。可能需要数分钟甚至数十分钟，此段时间可以离开网页，待数据获取完毕后重新输入即可直接显示。<br />
+                经过测试，Windows 和 Linux 平台均可以正常工作；目前测试过的最大数据量的用户，处理耗时30分钟左右。<br />
+                当前设置的时区为东八区，未来如果不懒可能会增加选择时区功能（应该这么简单的还是会加的），方便大家查看自己的数据。<br />
+                注意：如果在数据获取过程中操作知乎，<del>那么如果再次提交会重新获取所有数据而不是增量获取。</del>
+                本次获取应当不会将新的操作计入统计，而下一次提交会增量获取，仅第一次数据获取需要较长时间。<br />
+            </div>
+            <hr />
+            <div class="form-wrapper">
+                <form id="id_form">
+                    <div class="input-wrapper">
+                        请输入你的用户名：
+                        <input id="user_id" type="text" placeholder="用户名" autocorrect="off" spellcheck="false" autocapitalize="off">
+                        <button id="id_submit" class="submit-button has-spinner" type="button"><div id="id_submit_text" class="submit-button-text" nowrap>提交</div><span class="spinner"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span></button>
+                        <span id="msg"></span>
+                    </div>
+                    <div class="checkbox checkbox-info">
+                        <input id="date_checkbox" type="checkbox" />
+                        <label for="date_checkbox">
+                            选择日期区间：
+                        </label>
+                        <div id="date_picker" class="input-prepend input-group" style="width: 239px; height: 34px; display: inline-block; white-space:nowrap;">
+                            <span class="add-on input-group-addon" style="display: inline-block; width: 39px; height: 34px;">
+                                <i class="glyphicon glyphicon-calendar fa fa-calendar" style="vertical-align: middle;"></i>
+                            </span>
+                            <input type="text" readonly="readonly" style="width: 200px; display: inline-block; margin-left: -5px;" name="range" id="range" class="form-control" value="#" />
+                            <script language="javascript">
+                                var date = new Date()
+                                var range = date.getFullYear() + '-' +
+                                    ((date.getMonth() < 9) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' +
+                                    "01" + " - " +
+                                    date.getFullYear() + '-' +
+                                    ((date.getMonth() < 9) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' +
+                                    ((date.getDate() <= 9) ? ('0' + date.getDate()) : date.getDate());
+                                $("#range").val(range);
+                            </script>
+                        </div>
+                    </div>
+                    <script language="javascript">
+                            $('#range').daterangepicker(null, function (start, end, label) {
+                                console.log(start.toISOString(), end.toISOString(), label);
+                            });
+                    </script>
+                </form>
+            </div>
+            <div class="canvas-wrapper" id="canvas-wrapper">
+                <canvas id="canvas" class="canvas" width="800" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<script language="javascript">
+    document.onkeydown = function (e) {
+        var theEvent = window.event || e;
+        var code = theEvent.keyCode || theEvent.which;
+        if (code == 13) {
+            $("#id_submit").click();
+        }
+    }
+
+    var list_sav;
+    var canvas = null;
+    $(document).ready(function () {
+        $("#id_submit").click(function () {
+            $("#id_submit_text").text("正在处理")
+            $("#id_submit").toggleClass('active')
+            document.getElementById("msg").innerHTML = '';
+            var user_id = $("#user_id").val();
+            var range = $("#range").val();
+            var checked;
+            if (document.getElementById("date_checkbox").checked)
+                checked = 1;
+            else
+                checked = 0;
+            //alert(user_id)
+            $("#id_form").ajaxSubmit({
+                type: "post",  //提交方式
+                dataType: "text", //数据类型
+                url: "/activities_handler/", //请求url
+                data: {
+                    'user_id': user_id,
+                    'checked': checked,
+                    'range': range
+                },
+                success: function (data) { //提交成功的回调函数
+                    $("#id_submit_text").text("提交")
+                    $("#id_submit").removeClass('active')
+                    var json = eval("(" + data + ")");
+
+                    if (canvas != null) {
+                        canvas.destroy();
+                    }
+                    // 判断是否有错误信息
+                    if (json['msg'] != '') {
+                        document.getElementById("msg").innerHTML = json['msg'];
+                        return;
+                    }
+                    plot(json['list'])
+                    list_sav = json['list']
+                },
+                error: function (data) {
+                    $("#id_submit_text").text("提交")
+                    $("#id_submit").removeClass('active')
+                    document.getElementById("msg").innerHTML = "等待超时或内部服务器错误";
+                }
+            });
+            return false; //不刷新页面
+        });
+
+        $('#range span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+        $('#range').daterangepicker();
+    });
+
+
+    function plot(list) {
+        if (!list || (Object.prototype.toString.call(list) === '[object Array]' && list.length === 0)) {
+            console.log("List is null, undefined or empty.")
+        } else {
+            list.push(list[0]);
+        }
+        var data = {
+            labels: ["0", "", "", "3", "", "", "6", "", "", "9", "", "", "12", "", "", "15", "", "", "18", "", "", "21", "", "", "24"],
+            datasets: [
+                {
+                    label: "相对频率",
+                    // INFO: Settings for Chart.js 2.x
+                    //backgroundColor: "rgba(151,187,205,0.5)",
+                    //borderColor: "rgba(151,187,205,1)",
+                    //borderWidth: 2,
+                    //pointBorderColor: "rgba(151,187,205,1)",
+                    //pointBackgroundColor: "#fff",
+                    //pointHoverBackgroundColor: "#fff",
+                    //pointHoverBorderColor: "rgba(151,187,205,1)",
+                    //scaleIntegersOnly: true,
+
+                    // INFO: Settings for Chart.js 1.x
+                    fillColor: "rgba(151,187,205,0.5)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,1)",
+
+                    data: list
+                    }
+            ]
+        }
+        canvas = new Chart(document.getElementById("canvas").getContext("2d")).Line(data);
+        //canvas = new Chart($('#canvas'), {
+        //    type: 'line',
+        //    data: data,
+        //    options: {
+        //        bezierCurve: false,
+        //        scaleStartValue: 0,
+        //    }
+        //});
+    }
+
+    window.addEventListener("resize", resizeCanvas, false);
+
+    function resizeCanvas() {
+        if (canvas != null) {
+            canvas.destroy();
+        }
+        document.getElementById("canvas").style.width = $("#canvas-wrapper").width() + "px";
+        document.getElementById("canvas").style.height = $("#canvas-wrapper").width() / 2 + "px";
+        document.getElementById("canvas").width = $("#canvas-wrapper").width();
+        document.getElementById("canvas").height = $("#canvas-wrapper").width() / 2;
+        plot(list_sav);
+    };
+    resizeCanvas();
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row typo">
+    <div class="col-md-8 col-md-offset-2">
+        <!-- 页面内容 -->
+        <div class="well typo post post-index">
+
+            <h2 class="title">
+                欢迎访问 Zhihu Digger
+            </h2>
+
+            <div class="post_info">
+                <ul class="tag_box inline list-inline">
+                    <li>本页创建于</li>
+                    <li><i class="fa fa-calendar"></i></li>
+                    <li id="post-date"> 2016 年 07 月 09 日</li>
+                </ul>
+            </div>
+
+            <div class="archive">
+                欢迎访问 Zhihu Digger，这个站主要会挖掘一些知乎上的有趣的东西。<br />
+                如果你有兴趣提供协助，欢迎来测试或帮助编写程序。
+            </div>
+        </div>
+        <div class="well typo post post-index">
+
+            <h2 class="title">
+                <a href="/zhihu/activities">
+                    知乎用户动态统计
+                </a>
+            </h2>
+            <div class="archive">
+                此项目通过获取用户动态的时间信息，进行数据分析和图表绘制，帮助更好了解自己使用知乎的习惯。<br />
+                如果你有兴趣提供协助，欢迎来测试或帮助编写程序。
+            </div>
+        </div>
+        <div class="well typo post post-index">
+
+            <h2 class="title">
+                <a href="/zhihu/avatar">
+                    知乎用户头像图片获取
+                </a>
+            </h2>
+            <div class="archive">
+                此项目很简单，如果对于 Web 开发者来说几乎就是开一个 F12 开发者工具的事情。当然，顺手做一下也还是好的。<br />
+                如果你有兴趣提供协助，欢迎来测试或帮助编写程序。
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

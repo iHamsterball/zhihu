@@ -122,5 +122,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static").replace('\\', '/')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'zhihu_activities/static').replace('\\', '/'),
+    os.path.join(BASE_DIR, 'zhihu/static').replace('\\', '/'),
 )

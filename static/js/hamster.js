@@ -1,12 +1,12 @@
 ﻿/* =============================================================================
 #     FileName: hamster.js
-#         Desc: javascript for blog
-#       Author: codepiano
-#        Email: anyexingchen999@qq.com
-#     HomePage: http://www.weibo.com/anyexingchen
-#      Version: 0.0.1
-#   LastChange: 2013-05-12 01:39:30
-#      History:
+#         Desc: javascript for website theme
+#       Author: Cother (based on the work of codepiano)
+#        Email: ihamsterball
+#     HomePage: https://hamsterball.me
+#      Version: 0.0.2
+#   LastChange: 2016-08-28 19:45:16
+#      History: 2013-05-12 01:39:30
 ============================================================================= */
 /* 页面加载后执行 */
 !function ($) {

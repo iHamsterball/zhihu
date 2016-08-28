@@ -58,7 +58,7 @@ cookies
 zhihu/cookies
 
 # Captcha image
-.gif
+*.gif
 
 # Data gathered
 data/

@@ -158,11 +158,11 @@ class Activities:
         self.save_result()
 
 
-    def generate_statistics(self, start=0, end=sys.maxint):
-        os.environ.get('TZ', '(not set)')
-        os.environ['TZ'] = 'Asia/Harbin'
+    def generate_statistics(self, start=0, end=sys.maxint, timezone='Asia/Harbin'):
+        os.environ['TZ'] = timezone
         if not platform.system() == 'Windows':
             time.tzset()
+            print os.environ.get('TZ', '(not set)')
         for i in self.list:
             if i >= start and i <= end:
                 self.count += 1

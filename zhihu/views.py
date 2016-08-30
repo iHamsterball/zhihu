@@ -29,6 +29,8 @@ def activities_handler(request):
     print 'request id: ' + user_id
     checked = request.POST.get('checked', 0)
     range_str = request.POST.get('range', '')
+    timezone = request.POST.get('timezone', 'Asia/Harbin')
+    print timezone
     msg = ''
 
     if Activities.check_userid(user_id):
@@ -51,7 +53,7 @@ def activities_handler(request):
     end = int(time.mktime(time.strptime(end,'%Y-%m-%d %H:%M:%S')))
 
     if string.atoi(checked) == 1:
-        fetcher.generate_statistics(start, end)
+        fetcher.generate_statistics(start, end, timezone)
     else:
         fetcher.generate_statistics()
 

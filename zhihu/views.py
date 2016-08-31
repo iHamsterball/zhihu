@@ -53,9 +53,9 @@ def activities_handler(request):
     end = int(time.mktime(time.strptime(end,'%Y-%m-%d %H:%M:%S')))
 
     if string.atoi(checked) == 1:
-        fetcher.generate_statistics(start, end, timezone)
+        fetcher.generate_statistics(timezone, start, end)
     else:
-        fetcher.generate_statistics()
+        fetcher.generate_statistics(timezone)
 
     if(fetcher.calculate() == False):
         msg = '所选时段暂无数据'

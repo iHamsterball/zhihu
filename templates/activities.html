@@ -153,6 +153,18 @@
         $('.selectpicker').selectpicker({
             size: 8
         });
+        // 禁用时区下拉菜单
+        $("#timezone").attr("disabled", "disabled");
+
+        $("#timezone_checkbox").click(function () {
+            if ($("#timezone_checkbox").prop("checked")) {
+                $("#timezone").removeAttr("disabled");
+                console.log("Enabled timezone selector...");
+            } else {
+                $("#timezone").attr("disabled", "disabled");
+                console.log("Disabled timezone selector...");
+            }
+        });
 
         $("#id_submit").click(function () {
             $("#id_submit_text").text("正在处理")

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Build-in / Std
 import os, sys, time, platform, random, string, pickle
-import re, json, cookielib
+import re, json, cookielib, ctypes, _ctypes
 
 # requirements
 import requests, termcolor, html2text
@@ -42,10 +42,22 @@ sys.setdefaultencoding('utf8')
 
 class Status:
     so = None
+    delay = None
 
     def __init__(self):
-        self.so = ctypes.CDLL("lib/ping.so")
+        self.so = ctypes.CDLL("./zhihu/lib/ping.so")
+
+    def __reload__(self):
+	_ctypes.dlclose(self.so._handle)
+	_ctypes.dlclose(self.so._handle)
+	self.so = ctypes.CDLL("./zhihu/lib/ping.so")
+	print "reload"
 
     def ping(self):
-        delay = self.so.ping("www.zhihu.com") / 1000.0
-        return delay
+	self.__reload__()
+        ret = self.so.ping("www.zhihu.com")
+	if ret != -1:
+	    self.delay = ret / 1000.0
+	else:
+	    return self.ping()
+        return self.delay

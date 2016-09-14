@@ -31,15 +31,15 @@
                 <tbody>
                     <tr>
                         <td class="col-md-2"><i class="fa fa-server"></i> <span>状态</span></td>
-                        <td class="col-md-2 success"></td>
+                        <td class="col-md-2" id="status"></td>
                     </tr>
                     <tr>
                         <td class="col-md-2"><i class="fa fa-signal"></i> <span>延迟</span></td>
-                        <td class="col-md-2 warning"></td>
+                        <td class="col-md-2" id="delay"></td>
                     </tr>
                     <tr>
                         <td class="col-md-2"><i class="fa fa-user" style="width:14px; text-align:center;"></i> <span>账号</span></td>
-                        <td class="col-md-2 danger"></td>
+                        <td class="col-md-2" id="account"></td>
                     </tr>
                 </tbody>
             </table>
@@ -47,5 +47,24 @@
         </div>
     </div>
 </div>
+<script language="javascript">
+    $(document).ready(function () {
+        update();
+    });
 
+    function update(){
+        $.ajax({
+            url: "/status_handler/",
+            success: function (data) {
+                var json = eval("(" + data + ")");
+                document.getElementById("status").innerHTML = "在线";
+                document.getElementById("delay").innerHTML = json['delay'];
+
+            },
+            error: function (data, jqXHR) {
+                document.getElementById("status").innerHTML = jqXHR.statusText;
+            }
+        });
+    }
+</script>
 {% endblock %}

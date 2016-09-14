@@ -29,5 +29,6 @@ urlpatterns = [
     url(r'^zhihu/avatar/', views.avatar),
     url(r'^activities_handler', views.activities_handler),
     url(r'^avatar_handler', views.avatar_handler),
+    url(r'^status_handler', views.status_handler),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

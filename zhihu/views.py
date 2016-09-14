@@ -86,4 +86,7 @@ def avatar_handler(request):
 @csrf_exempt
 def status_handler(request):
     fetcher = Status()
+    if fetcher:
+	del fetcher
+	fetcher = Status()
     return HttpResponse(json.dumps({"delay":fetcher.ping()}))

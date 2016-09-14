@@ -52,19 +52,33 @@
         update();
     });
 
-    function update(){
+    function update() {
         $.ajax({
             url: "/status_handler/",
             success: function (data) {
                 var json = eval("(" + data + ")");
                 document.getElementById("status").innerHTML = "在线";
-                document.getElementById("delay").innerHTML = json['delay'];
+		$('#status').addClass("success");
+                document.getElementById("delay").innerHTML = json['delay'] + "ms";
+		classify(json);
 
             },
             error: function (data, jqXHR) {
-                document.getElementById("status").innerHTML = jqXHR.statusText;
+                document.getElementById("status").innerHTML = jqXHR.status;
+		$('#status').addClass("success");
             }
         });
+    }
+
+    function classify(json) {
+	var delay = json['delay'];
+	if (delay <= 200) {
+	    $('#delay').addClass("success");
+	} else if (delay > 200 && delay <= 500) {
+	    $('#status').addClass("warning");
+	} else {
+	    $('#status').addClass("success");
+	}
     }
 </script>
 {% endblock %}

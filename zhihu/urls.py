@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^index/', views.index),
     url(r'^about/', views.about),
+    url(r'^status/', views.status),
     url(r'^zhihu/activities/', views.activities),
     url(r'^zhihu/avatar/', views.avatar),
     url(r'^activities_handler', views.activities_handler),

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block additional_css %}
+{% load staticfiles %}
+<link href="/static/css/zhihu.css" rel="stylesheet">
+{% endblock %}
+{% block additional_js %}
+<script language="javascript" type="text/jscript" src="/static/js/jquery.form.js"></script>
+{% endblock %}
+{% block content %}
+<div class="row typo">
+    <div class="col-md-8 col-md-offset-2">
+        <!-- 页面内容 -->
+        <div class="well typo post post-index">
+            <h2 class="title">
+                服务器状态
+            </h2>
+            <div class="post_info">
+                <div class="post_info">
+                    <ul class="tag_box inline list-inline">
+                        <li>本页创建于</li>
+                        <li><i class="fa fa-calendar"></i></li>
+                        <li id="post-date"> 2016 年 09 月 06 日</li>
+                    </ul>
+                </div>
+            </div>
+            <h3>说明</h3>
+            <div class="archive">
+                
+            </div>
+            <table class="table table-hover table-bordered" id="server-status">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2"><i class="fa fa-server"></i> <span>状态</span></td>
+                        <td class="col-md-2 success"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-2"><i class="fa fa-signal"></i> <span>延迟</span></td>
+                        <td class="col-md-2 warning"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-2"><i class="fa fa-user" style="width:14px; text-align:center;"></i> <span>账号</span></td>
+                        <td class="col-md-2 danger"></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}

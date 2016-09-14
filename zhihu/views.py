@@ -6,6 +6,7 @@ import json, string, time
 
 from activities import Activities
 from avatar import Avatar
+from status import Status
 
 def index(request):
     template = loader.get_template('index.html')
@@ -21,6 +22,10 @@ def about(request):
 
 def avatar(request):
     template = loader.get_template('avatar.html')
+    return HttpResponse(template.render(request))
+
+def status(request):
+    template = loader.get_template('status.html')
     return HttpResponse(template.render(request))
 
 @csrf_exempt
@@ -77,3 +82,8 @@ def avatar_handler(request):
     fetcher.fetch_img_url()
     fetcher.save_img()
     return HttpResponse(json.dumps({"src":fetcher.ret, "msg":msg}))
+
+@csrf_exempt
+def status_handler(request):
+    fetcher = Status()
+    return HttpResponse(json.dumps({"delay":fetcher.ping()}))

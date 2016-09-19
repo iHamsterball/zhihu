@@ -52,6 +52,7 @@ class Activities:
     list = None
     array = None
     relative_frequency = None
+    lock = False
 
     def __init__(self, userid):
         self.userid = userid
@@ -146,6 +147,7 @@ class Activities:
 
     def gather_from_website(self):
         flag = False
+        self.set_lock()
         while (not flag):
             flag = self.__get_activity__()
             self.__delay__()
@@ -153,6 +155,7 @@ class Activities:
             #print type(self.log)
             if self.saved_data > string.atoi(self.log):
                 flag = True
+                self.revoke_lock()
         self.list = list(set(self.list))
         self.list.sort(reverse=True)
         self.save_result()
@@ -218,6 +221,15 @@ class Activities:
             if string.atoi(node.get("data-time")) == list[0]:
                 return True
         return False
+
+    def check_lock(self):
+        return os.path.isfile("data/" + self.userid + "/.lock")
+
+    def set_lock(self):
+        file("data/" + self.userid + "/.lock", "wt")
+
+    def revoke_lock(self):
+        os.remove("data/" + self.userid + "/.lock")
 
     def load_from_file(self):
         list_file = file("data/" + self.userid + "/list.ser", "rt")

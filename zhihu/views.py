@@ -44,6 +44,10 @@ def activities_handler(request):
         msg = '用户名不存在'
         return HttpResponse(json.dumps({"list":'', "msg":msg}))
 
+    if fetcher.check_lock():
+        msg = '获取中，请稍后'
+        return HttpResponse(json.dumps({"list":'', "msg":msg}))
+
     if not fetcher.check_gathered():
         fetcher.gather_from_website()
         print "Gathering from website..."

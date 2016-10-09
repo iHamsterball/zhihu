@@ -45,12 +45,12 @@ class Status:
     delay = None
 
     def __init__(self):
-        self.so = ctypes.CDLL("./zhihu/lib/ping.so")
+        self.so = ctypes.CDLL("./zhihu/clib/ping.so")
 
     def __reload__(self):
 	_ctypes.dlclose(self.so._handle)
 	_ctypes.dlclose(self.so._handle)
-	self.so = ctypes.CDLL("./zhihu/lib/ping.so")
+	self.so = ctypes.CDLL("./zhihu/clib/ping.so")
 	print "reload"
 
     def ping(self):

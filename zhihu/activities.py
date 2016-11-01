@@ -155,10 +155,10 @@ class Activities:
             #print type(self.log)
             if self.saved_data > string.atoi(self.log):
                 flag = True
-                self.revoke_lock()
         self.list = list(set(self.list))
         self.list.sort(reverse=True)
         self.save_result()
+        self.revoke_lock()
 
 
     def generate_statistics(self, timezone='Asia/Harbin', start=0, end=sys.maxint):
@@ -229,9 +229,11 @@ class Activities:
         if not os.path.exists("data/" + self.userid):
             os.mkdir("data/" + self.userid)
         file("data/" + self.userid + "/.lock", "wt")
+        print "Lock setted"
 
     def revoke_lock(self):
         os.remove("data/" + self.userid + "/.lock")
+        print "Lock revoked"
 
     def load_from_file(self):
         list_file = file("data/" + self.userid + "/list.ser", "rt")

@@ -226,6 +226,8 @@ class Activities:
         return os.path.isfile("data/" + self.userid + "/.lock")
 
     def set_lock(self):
+        if not os.path.exists("data/" + self.userid):
+            os.mkdir("data/" + self.userid)
         file("data/" + self.userid + "/.lock", "wt")
 
     def revoke_lock(self):
